@@ -1,0 +1,34 @@
+spring:
+  resources:
+    static-locations: classpath:/
+  freemarker:
+    settings:
+        classic_compatible: true
+    template-loader-path: classpath:/templates/ftl/
+    suffix: .ftl
+    content-type: text/html
+    charset: UTF-8
+  datasource:
+        driverClass: com.mysql.jdbc.Driver  
+        url: jdbc:mysql://127.0.0.1:3306/statistics?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+        username: root
+        password: root
+        
+server:
+  port: 8083
+  error:
+    whitelabel:
+      enabled: true
+debug: true
+ 
+ # mybaties 配置
+mybatis:
+  mapperLocations: classpath:mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

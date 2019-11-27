@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.auth.AuthorityMapper">
+	<resultMap id="BaseResultMap" type="com.example.demo.model.SysResourcesInfo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="resources_uuid" property="resourcesUuid"
+			jdbcType="VARCHAR" />
+		<result column="resources_name" property="resourcesName"
+			jdbcType="VARCHAR" />
+		<result column="resources_url" property="resourcesUrl"
+			jdbcType="VARCHAR" />
+		<result column="creation_time" property="creationTime"
+			jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, resources_uuid, resources_name, resources_url, creation_time,
+		update_time, is_delete
+	</sql>
+	<select id="query" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_resources_info info
+		where 1=1
+		and is_delete=0
+		<if test="param!=null">
+		and info.resources_name like '%${param}%'
+		</if>
+	</select>
+
+	<select id="getResouList" resultType="com.example.demo.model.SysResourcesInfo">
+		SELECT
+		si.`id` AS id,
+		si.`resources_uuid` AS resourcesUuid,
+		si.`resources_name` AS resourcesName,
+		si.`resources_url` AS resourcesUrl,
+		si.`creation_time` AS creationTime,
+		si.`update_time` AS updateTime,
+		si.`is_delete` AS isDelete,
+		CASE
+		WHEN
+		(SELECT
+		id
+		FROM
+		sys_role_resources sr
+		WHERE sr.`role_uuid` = #{roleUuid}
+		AND sr.`resources_uuid` = si.`resources_uuid` AND sr.`is_delete`=0) IS NULL
+		THEN FALSE
+		ELSE TRUE
+		END AS LAY_CHECKED
+		FROM
+		`sys_resources_info` si
+	</select>
+
+	<update id="del">
+		update sys_resources_info
+		set 
+		is_delete =1
+		where resources_uuid = #{resourcesUuid,jdbcType=VARCHAR}
+	</update>
+	<insert id="insert" parameterType="com.example.demo.model.SysResourcesInfo">
+		insert into sys_resources_info (id, resources_uuid, resources_name,
+		resources_url, creation_time, update_time,
+		is_delete)
+		values (#{id,jdbcType=BIGINT}, #{resourcesUuid,jdbcType=VARCHAR},
+		#{resourcesName,jdbcType=VARCHAR},
+		#{resourcesUrl,jdbcType=VARCHAR}, #{creationTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE},
+		#{isDelete,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.example.demo.model.SysResourcesInfo">
+		insert into sys_resources_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="resourcesUuid != null">
+				resources_uuid,
+			</if>
+			<if test="resourcesName != null">
+				resources_name,
+			</if>
+			<if test="resourcesUrl != null">
+				resources_url,
+			</if>
+			<if test="creationTime != null">
+				creation_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="resourcesUuid != null">
+				#{resourcesUuid,jdbcType=VARCHAR},
+			</if>
+			<if test="resourcesName != null">
+				#{resourcesName,jdbcType=VARCHAR},
+			</if>
+			<if test="resourcesUrl != null">
+				#{resourcesUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="creationTime != null">
+				#{creationTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.example.demo.model.SysResourcesInfo">
+		update sys_resources_info
+		<set>
+			<if test="resourcesUuid != null">
+				resources_uuid = #{resourcesUuid,jdbcType=VARCHAR},
+			</if>
+			<if test="resourcesName != null">
+				resources_name = #{resourcesName,jdbcType=VARCHAR},
+			</if>
+			<if test="resourcesUrl != null">
+				resources_url = #{resourcesUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="creationTime != null">
+				creation_time = #{creationTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isDelete != null">
+				is_delete = #{isDelete,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.example.demo.model.SysResourcesInfo">
+		update sys_resources_info
+		set resources_uuid = #{resourcesUuid,jdbcType=VARCHAR},
+		resources_name = #{resourcesName,jdbcType=VARCHAR},
+		resources_url = #{resourcesUrl,jdbcType=VARCHAR},
+		creation_time = #{creationTime,jdbcType=TIMESTAMP},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		is_delete = #{isDelete,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

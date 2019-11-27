@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.user.SysUserInfoMapper">
+	<resultMap id="BaseResultMap" type="com.example.demo.model.SysUserInfo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_uuid" property="userUuid" jdbcType="VARCHAR" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="user_nick_name" property="userNickName"
+			jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="telephone" property="telephone" jdbcType="VARCHAR" />
+		<result column="role" property="role" jdbcType="INTEGER" />
+		<result column="image" property="image" jdbcType="VARCHAR" />
+		<result column="last_ip" property="lastIp" jdbcType="VARCHAR" />
+		<result column="last_time" property="lastTime" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, user_uuid, username, user_nick_name, password, email, telephone,
+		role, image,
+		last_ip, last_time
+	</sql>
+	<select id="query" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user_info where
+		 1=1 and is_delete=0
+	</select>
+	<select id="get" resultType="com.example.demo.model.SysUserInfo">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user_info
+		where sys_user_info.username=#{username}
+	</select>
+	<update id="deleteByPrimaryKey" parameterType="java.lang.String">
+		update sys_user_info
+		set is_delete = 1
+		where user_uuid = #{userUuid,jdbcType=VARCHAR}
+	</update>
+	<insert id="insert" parameterType="com.example.demo.model.SysUserInfo">
+		insert into sys_user_info (id, user_uuid, username,
+		user_nick_name, password, email,
+		telephone, role, image,
+		last_ip, last_time,is_delete)
+		values (#{id,jdbcType=INTEGER}, #{userUuid,jdbcType=VARCHAR},
+		#{username,jdbcType=VARCHAR},
+		#{userNickName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+		#{telephone,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER},
+		#{image,jdbcType=VARCHAR},
+		#{lastIp,jdbcType=VARCHAR}, #{lastTime,jdbcType=VARCHAR},#{isDelete,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.example.demo.model.SysUserInfo">
+		insert into sys_user_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userUuid != null">
+				user_uuid,
+			</if>
+			<if test="username != null">
+				username,
+			</if>
+			<if test="userNickName != null">
+				user_nick_name,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="telephone != null">
+				telephone,
+			</if>
+			<if test="role != null">
+				role,
+			</if>
+			<if test="image != null">
+				image,
+			</if>
+			<if test="lastIp != null">
+				last_ip,
+			</if>
+			<if test="lastTime != null">
+				last_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userUuid != null">
+				#{userUuid,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="userNickName != null">
+				#{userNickName,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="telephone != null">
+				#{telephone,jdbcType=VARCHAR},
+			</if>
+			<if test="role != null">
+				#{role,jdbcType=INTEGER},
+			</if>
+			<if test="image != null">
+				#{image,jdbcType=VARCHAR},
+			</if>
+			<if test="lastIp != null">
+				#{lastIp,jdbcType=VARCHAR},
+			</if>
+			<if test="lastTime != null">
+				#{lastTime,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="update" parameterType="com.example.demo.model.SysUserInfo">
+		update sys_user_info
+		<set>
+			<if test="userUuid != null">
+				user_uuid = #{userUuid,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="userNickName != null">
+				user_nick_name = #{userNickName,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="telephone != null">
+				telephone = #{telephone,jdbcType=VARCHAR},
+			</if>
+			<if test="role != null">
+				role = #{role,jdbcType=INTEGER},
+			</if>
+			<if test="image != null">
+				image = #{image,jdbcType=VARCHAR},
+			</if>
+			<if test="lastIp != null">
+				last_ip = #{lastIp,jdbcType=VARCHAR},
+			</if>
+			<if test="lastTime != null">
+				last_time = #{lastTime,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where 1=1
+		<if test="id!=null and id!=''">
+		and id = #{id,jdbcType=INTEGER}
+		</if>
+		<if test="userUuid!=null and userUuid!=''">
+		and user_uuid = #{userUuid,jdbcType=VARCHAR}
+		</if>
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.example.demo.model.SysUserInfo">
+		update sys_user_info
+		set user_uuid = #{userUuid,jdbcType=VARCHAR},
+		username = #{username,jdbcType=VARCHAR},
+		user_nick_name = #{userNickName,jdbcType=VARCHAR},
+		password = #{password,jdbcType=VARCHAR},
+		email = #{email,jdbcType=VARCHAR},
+		telephone = #{telephone,jdbcType=VARCHAR},
+		role = #{role,jdbcType=INTEGER},
+		image = #{image,jdbcType=VARCHAR},
+		last_ip = #{lastIp,jdbcType=VARCHAR},
+		last_time = #{lastTime,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

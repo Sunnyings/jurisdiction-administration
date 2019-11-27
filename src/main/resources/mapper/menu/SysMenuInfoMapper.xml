@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.menu.SysMenuInfoMapper">
+	<resultMap id="BaseResultMap" type="com.example.demo.model.SysMenuInfo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="role_uuid" property="roleUuid" jdbcType="VARCHAR" />
+		<result column="menu_uuid" property="menuUuid" jdbcType="VARCHAR" />
+		<result column="creation_time" property="creationTime"
+			jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, role_uuid, menu_uuid, creation_time, update_time
+	</sql>
+
+	<select id="query" resultType="com.example.demo.model.SysMenuInfo">
+			SELECT 
+				  info2.id AS id,
+				  info2.`menu_uuid` AS menuUuid,
+				  info2.`menu_name` AS menuName,
+				  info2.url AS url,
+				  info2.`pid` AS pid,
+				  info2.`seq` AS seq,
+				  info.`menu_name` AS levelMenu 
+				FROM
+				  sys_menu_info info 
+				  RIGHT JOIN sys_menu_info info2 
+				    ON info2.`pid` = info.`id` 
+				WHERE info2.is_delete = 0
+		</select>
+
+
+	<select id="findByUsername" resultType="com.example.demo.model.SysUserInfo">
+		SELECT
+		info.`id` AS id,
+		info.`user_uuid` AS userUuid,
+		info.`username` AS username,
+		info.`user_nick_name` AS userNickName,
+		info.`password` AS PASSWORD,
+		info.`email` AS email,
+		info.`telephone` AS telephone,
+		info.`role` AS
+		role,
+		info.`image` AS image,
+		info.`last_ip` AS lastIp,
+		info.last_time AS
+		lastTime,
+		info.is_delete as isDelete
+		FROM
+		`sys_user_info` info
+		WHERE info.username = #{username}
+		and info.is_delete=0
+	</select>
+
+
+	<select id="getRole" resultType="String">
+		SELECT ri.role_code FROM
+		`sys_user_role` ur RIGHT JOIN `sys_role_info` ri ON
+		ur.`role_uuid`=ri.role_uuid
+		WHERE ur.`user_uuid`=#{userUuid}
+	</select>
+
+
+	<select id="selectSysResourcesInfo" resultType="com.example.demo.model.SysResourcesInfo">
+		SELECT
+		ri.`id`,ri.`resources_uuid` as resourcesUuid,ri.`resources_name` as
+		resourcesName,ri.`resources_url` as resourcesUrl,rinfo.`role_code` as
+		roleCode
+		FROM `sys_user_info` users RIGHT JOIN sys_user_role ur ON
+		ur.user_uuid=users.user_uuid
+		RIGHT JOIN sys_role_info rinfo ON
+		rinfo.`role_uuid`=ur.`role_uuid`
+		RIGHT JOIN `sys_role_resources` rr ON
+		rr.`role_uuid`=rinfo.`role_uuid`
+		RIGHT JOIN `sys_resources_info` ri ON
+		ri.`resources_uuid`=rr.`resources_uuid`
+	</select>
+
+	<select id="getAllTopMenu" resultType="com.example.demo.model.SysMenuInfo">
+		SELECT
+		sysm.`id` AS id,
+		sysm.`menu_uuid` AS menuUuid,
+		sysm.`menu_name` AS menuName,
+		sysm.`url`
+		AS url,
+		sysm.`pid` AS pid,
+		sysm.`seq` AS seq,
+		sysm.`creation_time` AS
+		creationTime,
+		sysm.`update_time` AS updateTime,
+		sysm.`is_delete` AS
+		isDelete
+		FROM
+		`sys_menu_info` sysm
+		WHERE sysm.`pid` = -1
+		AND
+		sysm.`is_delete` = 0
+		ORDER BY sysm.`seq` ASC
+	</select>
+	<insert id="insert" parameterType="com.example.demo.model.SysMenuInfo" >
+	    insert into sys_menu_info (id, menu_uuid, menu_name, 
+	      url, pid, seq, creation_time, 
+	      update_time, is_delete)
+	    values (#{id,jdbcType=VARCHAR}, #{menuUuid,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR}, 
+	      #{url,jdbcType=VARCHAR}, #{pid,jdbcType=BIGINT}, #{seq,jdbcType=BIGINT}, #{creationTime,jdbcType=TIMESTAMP}, 
+	      #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=VARCHAR})
+	  </insert>
+    <select id="getMenuSeq" resultType="java.lang.Integer">
+    SELECT 
+	  MAX(sysm.seq) 
+	FROM
+	  `sys_menu_info` sysm 
+	WHERE sysm.`pid` = #{pid} 
+	  AND sysm.`is_delete` = 0 
+	ORDER BY sysm.`seq` ASC 
+    </select>
+	<select id="getAllChildMenu" resultType="com.example.demo.model.SysMenuInfo">
+		SELECT
+		sysm.`id` AS id,
+		sysm.`menu_uuid` AS menuUuid,
+		sysm.`menu_name` AS menuName,
+		sysm.`url`
+		AS url,
+		sysm.`pid` AS pid,
+		sysm.`seq` AS seq,
+		sysm.`creation_time` AS
+		creationTime,
+		sysm.`update_time` AS updateTime,
+		sysm.`is_delete` AS
+		isDelete
+		FROM
+		`sys_menu_info` sysm
+		WHERE sysm.`pid` !=-1
+		AND
+		sysm.`is_delete` = 0
+		ORDER BY sysm.`seq` ASC
+	</select>
+	<select id="getTopMenu" resultType="com.example.demo.model.SysMenuInfo">
+		SELECT si.`id` AS id,
+		si.`menu_uuid` AS menuUuid,
+		si.`menu_name` AS menuName,
+		si.`url` AS url,
+		si.`pid` AS pid,
+		si.`seq` AS seq,
+		si.`creation_time` AS creationTime,
+		si.`update_time` AS updateTime,
+		si.`is_delete` AS isDelete
+		FROM
+		sys_menu_info si WHERE id IN(
+		SELECT mi.`pid` FROM `sys_user_role` ur
+		RIGHT JOIN `sys_role_resources` rr
+		ON rr.`role_uuid`=ur.`role_uuid`
+		RIGHT JOIN `sys_resources_info` ri
+		ON ri.`resources_uuid`=rr.`resources_uuid`
+		RIGHT JOIN `sys_menu_info` mi ON mi.`url`=ri.`resources_url`
+		WHERE ur.`user_uuid` =#{userUuid}
+		AND
+		mi.`is_delete` = 0
+		AND mi.`is_delete` = 0
+    	AND rr.`is_delete`=0
+    	AND ur.`is_delete`=0
+		)
+		ORDER BY si.`seq`
+		ASC
+	</select>
+
+
+
+	<select id="getChildMenu" resultType="com.example.demo.model.SysMenuInfo">
+		SELECT
+		mi.`id` AS id,
+		mi.`menu_uuid` AS menuUuid,
+		mi.`menu_name` AS menuName,
+		mi.`url` AS url,
+		mi.`pid` AS pid,
+		mi.`seq` AS seq,
+		mi.`creation_time` AS creationTime,
+		mi.`update_time` AS updateTime,
+		mi.`is_delete` AS isDelete
+		FROM
+		`sys_user_role` ur
+		RIGHT JOIN `sys_role_resources` rr
+		ON rr.`role_uuid` = ur.`role_uuid`
+		RIGHT JOIN `sys_resources_info` ri
+		ON ri.`resources_uuid` = rr.`resources_uuid`
+		RIGHT JOIN `sys_menu_info` mi
+		ON mi.`url` = ri.`resources_url`
+		WHERE ur.`user_uuid` = #{userUuid}
+		AND mi.`is_delete` = 0
+		AND rr.`is_delete`=0
+		AND ri.`is_delete`=0
+		AND mi.`is_delete`=0
+		ORDER BY mi.`seq` ASC
+	</select>
+	
+	
+	<update id="delMenu" >
+	 update sys_menu_info
+		set 
+		is_delete =1
+		where url = #{url,jdbcType=VARCHAR}
+	</update>
+</mapper>

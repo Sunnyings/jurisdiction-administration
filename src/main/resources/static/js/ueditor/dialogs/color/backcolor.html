@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script type="text/javascript" src="../internal.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <style type="text/css">
+        *{margin:0;padding:0;color: #838383;}
+        table{font-size: 12px;margin: 10px;line-height: 30px}
+        .txt{width:300px;height:21px;line-height:21px;border:1px solid #d7d7d7;}
+    </style>
+</head>
+<body>
+<div style="width: 420px;">
+    <table width="430">
+        <tr>
+            <td>颜色：</td>
+            <td><input class="txt" id="color" type="text" /></td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript">
+dialog.onok=function(){
+	//""
+	var color=$("#color").val();
+	if(color!="" && /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test(color)){
+		editor.execCommand( 'backcolor', color);
+	}else{
+		alert("请输入合法的颜色代码!");
+		return;
+	}
+}
+//editor.execCommand( 'forecolor', '#000' );
+</script>
+</body>
+</html>
+
+

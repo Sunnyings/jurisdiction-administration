@@ -1,0 +1,224 @@
+ html , body{
+  padding:0px;
+  margin: 0px;
+ }
+
+ a{
+  display: inline-block;
+  text-decoration: none;
+ }
+
+ .box-size{
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
+  -webkit-box-sizing:border-box; /* Safari */
+}
+/* CSS 布局样式 */
+
+.whitespace{
+  margin-left:20px;
+  margin-right: 20px;
+}
+.padding-space{
+  padding-left:20px;
+  padding-right: 20px;
+}
+
+.flex-x{
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction:row;
+}
+
+.flex-y{
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction:column;
+}
+
+.con-sp-b{
+  justify-content:space-between; /* 两端对齐*/
+}
+.con-sp-a{
+  justify-content:space-around; /*每个项目两侧的间隔相等*/
+}
+.con-center{
+  justify-content:center; /* 居中*/
+}
+.ali-center{
+  align-items:center; /* 交叉轴上居中*/
+}
+
+.bg-theme{
+  background: #6dd4bd;
+}
+.bg-white{
+  background: #fff;
+}
+
+.bg-gray{
+  background: #f5f5f5;
+}
+
+.cl-theme{
+  color: #60c3ad;
+}
+
+.box-mtb{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.box-ptb{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.font-title{
+  font-size: 18px;
+}
+
+.line-theme{
+  width: 100%;
+  height: 1px;
+  background: #60c3ad;
+}
+
+.line-gray{
+  width: 100%;
+  height: 1px;
+  background: #f4f4f4;
+}
+
+.line-item{
+  width: 100%;
+  height: 8px;
+  background: #f4f4f4;
+}
+
+.ml10 {
+    margin-left: 10px;
+}
+
+.font-large {
+    font-size: 19px;
+}
+
+.font-hint{
+  font-size: 11px;
+}
+
+.font-rep-tip{
+  font-size:14px;
+}
+
+
+/* 预览css */
+.pre-body{
+  width: 520px;
+  height: 780px;
+  margin:auto;
+  margin-top:40px;
+  background: url(../images/bg_phone.png) no-repeat right;
+  overflow: hidden;
+}
+
+.pre-body .menu{
+  float: left;
+  width: 120px;
+  height: auto;
+  padding-top: 100px;
+}
+.pre-body .menu a, .pre-body .menu span{
+  display: block;
+  width: 100%;
+  text-align: center;
+  line-height: 50px;
+  border-radius: 4px;
+  margin-bottom: 30px;
+  font-size: 13px;
+}
+.pre-body .menu  a{
+  color: #353535;
+  background: #f0eff4;
+}
+.pre-body .menu span{
+  color: #fff;
+  background: #60c3ad;
+}
+.pre-body .view{
+   float: right;
+   width: 380px;
+   height: 780px; 
+   padding:115px 25px 100px 25px;
+   overflow: hidden;
+}
+
+.pre-body .view .topbox{
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: row ;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  color: #fff;
+  text-align: center;
+  background: #000;
+}
+.pre-body .view .topbox p{
+  flex-grow:1;
+  width: 0px;
+  padding: 0px;
+  margin: 0px;
+}
+.pre-body .view .topbox a{
+  width: 60px;
+  color: #fff;
+}
+.pre-body .view .topbox span{
+  width: 60px;
+}
+.pre-body .view .listbox{
+  display: block;
+  height: 220px;
+  margin: 10px;  
+  color:#000;
+  cursor: pointer;
+  overflow: hidden;
+  z-index:1000;
+}
+
+.pre-body .view .webbox{
+  display: block;
+  height: 505px;
+  margin: 10px;  
+  cursor: pointer;
+  overflow: auto;
+}
+
+.pre-body .view .listbox .list-img{
+  width: 100%;
+  height: 174px;
+  background: #ccc;
+}
+.pre-body .view .listbox .list-img img{
+  width: 100%;
+  height: 100%; 
+}
+
+.pre-body .view .listbox .list-title{
+  width: 100%;
+  height: 46px;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
+  -webkit-box-sizing:border-box; /* Safari */
+  padding-right: 90px;
+  line-height: 46px; 
+  font-size: 14px;
+  background: url(../images/icon_zan.jpg) no-repeat right;
+  background-size: 80px;
+  border-bottom: 1px solid #e7e7e7;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
